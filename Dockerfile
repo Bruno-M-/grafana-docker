@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM arm32v7/debian:stretch-slim
 
 ARG GRAFANA_URL="https://s3-us-west-2.amazonaws.com/grafana-releases/master/grafana-latest.linux-x64.tar.gz"
 ARG GF_UID="472"
