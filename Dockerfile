@@ -10,11 +10,11 @@ ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
     GF_PATHS_PROVISIONING="/etc/grafana/provisioning" \
     GF_UID="472" \
     GF_GID="472" \
-    GRAFANA_URL="https://s3-us-west-2.amazonaws.com/grafana-releases/master/grafana-latest.linux-x64.tar.gz"
+    GRAFANA_URL="https://s3-us-west-2.amazonaws.com/grafana-releases/"
 
 RUN apt-get update && apt-get install -qq -y tar libfontconfig curl ca-certificates && \
     mkdir -p "$GF_PATHS_HOME/.aws" && \
-    curl "$GRAFANA_URL" | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
+    curl "$GRAFANA_URL"$(curl "$GRAFANA_URL" 2>&1 | sed "s%<Key>\|</Key>%\n%g" | grep armv7.tar.gz$ | tail -n1) | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd -r -g $GF_GID grafana && \
